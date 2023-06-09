@@ -1,0 +1,35 @@
+class Solution
+{
+	public:
+	//Function to return list containing vertices in Topological order. 
+	void dfs(vector<int> &ans, vector<bool> &visited, vector<int> &inDegrees, vector<int> adj[], int u){
+	    visited[u] = true;
+	    ans.push_back(u);
+	    
+	    for(int v:adj[u]){
+	        inDegrees[v]--;
+	        if(inDegrees[v]==0 && !visited[v]){
+	            dfs(ans, visited, inDegrees, adj, v);
+	        }
+	    }
+	}
+	vector<int> topoSort(int V, vector<int> adj[]){
+	    vector<int> ans;
+	    vector<int> inDegrees(V, 0);
+	    
+	    for(int u=0;u<V;u++){
+	        for(int v:adj[u]){
+	            inDegrees[v]++;
+	        }
+	    }
+	    
+	   vector<bool> visited(V, false);
+	   for(int u=0;u<V;u++){
+	       if(!visited[u] && inDegrees[u]==0){
+	           dfs(ans, visited, inDegrees, adj, u);
+	       }
+	   }
+	   
+	   return ans;
+	}
+};
