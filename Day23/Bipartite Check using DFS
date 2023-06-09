@@ -1,1 +1,30 @@
+class Solution {
+public:
+    bool DFS(vector<vector<int>>& graph, vector<bool> &visited, vector<int> colors, int start, int color){
+        colors[start] = color;  
+        visited[start] = true;
 
+        for(int v:graph[start]){
+            if(!visited[v]){
+                if(DFS(graph, visited, colors, v, !colors[start])==false){
+                    return false;
+                }
+            }else if(colors[v]==colors[start]){
+                return false;
+            }
+        }
+        return true;
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        vector<bool> visited(graph.size(), false);
+        vector<int> colors(graph.size(), -1);
+        for(int u=0;u<graph.size();u++){
+            if(!visited[u]){
+                if(DFS(graph, visited, colors, u, 0)==false){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
