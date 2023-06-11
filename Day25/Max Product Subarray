@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int currMin = nums[0];
+        int currMax = nums[0];
+        int ans = currMax;
+
+        for(int i=1;i<nums.size();i++){
+            int temp = currMax;
+            currMax = max(max(temp*nums[i], currMin*nums[i]), nums[i]);
+            currMin = min(min(temp*nums[i], currMin*nums[i]), nums[i]);
+            ans = max(ans, currMax);
+        }
+        return ans;
+    }
+};
