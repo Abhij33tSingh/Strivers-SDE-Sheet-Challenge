@@ -1,0 +1,21 @@
+class Solution{
+	public:
+	vector<vector<int>> dp;
+	int fn(int arr[], int i, int preMaxIndex, int &n){
+	    if(i==n){
+	        return 0;
+	    }
+	    if(dp[i][preMaxIndex+1] != -1){
+	        return dp[i][preMaxIndex+1];
+	    }
+	    if(preMaxIndex==-1 || arr[i] > arr[preMaxIndex]){
+	        return dp[i][preMaxIndex+1] = max(arr[i] + fn(arr, i+1, i, n), fn(arr, i+1, preMaxIndex, n));    
+	    }
+	    return dp[i][preMaxIndex+1] = fn(arr, i+1, preMaxIndex, n);
+	    
+	}
+	int maxSumIS(int arr[], int n)  {  
+	    dp.resize(n, vector<int>(n+2, -1));
+	    return fn(arr, 0, -1, n);
+	}  
+};
