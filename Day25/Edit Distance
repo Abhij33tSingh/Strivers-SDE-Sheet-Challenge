@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int fn(string &str1, string &str2, int i, int j){
+        if(i<0 && j<0){
+            return 0;
+        }
+        if(i<0){
+            return j+1;
+        }
+        if(j<0){
+            return i+1;
+        }
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+        if(str1[i] == str2[j]){
+            return dp[i][j] = fn(str1, str2, i-1, j-1);
+        }
+        int a = 1+fn(str1, str2, i, j-1);
+        int b = 1+fn(str1, str2, i-1, j);
+        int c = 1+fn(str1, str2, i-1, j-1);
+        return dp[i][j] = min(a, min(b, c));
+    }
+    int minDistance(string word1, string word2) {
+        dp.resize(word1.size(), vector<int>(word2.size(), -1));
+        return fn(word1, word2, word1.size()-1, word2.size()-1);
+    }
+};
