@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    bool fn(vector<int> &nums, int sum, int n){
+        if(n==0){
+            return sum == 0;
+        }
+        if(sum == 0){
+            return true;
+        }
+        if(dp[sum][n] != -1){
+            return dp[sum][n];
+        }
+        if(nums[n-1] <= sum){
+            return dp[sum][n] = fn(nums, sum - nums[n-1], n-1) || fn(nums, sum, n-1);
+        }
+        return dp[sum][n] = fn(nums, sum, n-1);
+    }
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for(int ele:nums){
+            sum += ele;
+        }
+        if(sum % 2 == 1){
+            return false;
+        }
+        dp.resize(sum/2 + 1, vector<int>(nums.size()+1, -1));
+        return fn(nums, sum/2, nums.size());
+    }
+};
