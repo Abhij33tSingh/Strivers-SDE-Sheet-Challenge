@@ -1,0 +1,29 @@
+class Solution 
+{
+    public:
+    //Function to find the maximum profit and the number of jobs done.
+    vector<int> JobScheduling(Job arr[], int n) { 
+        priority_queue<pair<int, int>> pq;//profit time
+        for(int i=0;i<n;i++){
+            pq.push({arr[i].profit, arr[i].dead});
+        }
+        int nJobs = 0, maxProfit = 0;
+        vector<int> availableSlots(1e5+1, true);
+        while(!pq.empty()){
+            int dead = pq.top().second;
+            int profit = pq.top().first;
+            pq.pop();
+            
+            while(dead >= 1){
+                if(availableSlots[dead-1]){
+                    availableSlots[dead-1] = false;
+                    maxProfit += profit;
+                    nJobs += 1;
+                    break;
+                }
+                dead--;
+            }
+        }
+        return {nJobs, maxProfit};
+    } 
+};
