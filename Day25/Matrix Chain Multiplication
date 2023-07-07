@@ -1,0 +1,22 @@
+class Solution{
+public:
+    vector<vector<int>> dp;
+    int fn(int arr[], int i, int j){
+        if(i >= j){
+            return 0;
+        }
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+        int ans = INT_MAX;
+        for(int k=i;k<j;k++){
+            int temp = arr[i-1]*arr[j]*arr[k] + fn(arr, i, k) + fn(arr, k+1, j);
+            ans = min(ans, temp);
+        }
+        return dp[i][j] = ans;
+    }
+    int matrixMultiplication(int N, int arr[]){
+        dp.resize(N, vector<int>(N, -1));
+        return fn(arr, 1, N-1);
+    }
+};
