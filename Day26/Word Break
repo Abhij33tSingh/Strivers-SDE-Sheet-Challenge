@@ -1,0 +1,28 @@
+class Solution {
+public:
+    map<string, bool> dp;
+    bool fn(string s, set<string> &words){
+        if(s.size()==0){
+            return true;
+        }
+        if(dp.find(s) != dp.end()){
+            return dp[s];
+        }
+        for(int i=0;i<s.size();i++){
+            string str = s.substr(0, i+1);
+            if(words.count(str)){
+                if(fn(s.substr(i+1, s.size()-i-1), words)){
+                    return dp[s] = true;
+                }
+            }
+        }
+        return dp[s] = false;
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        set<string> words;
+        for(string str:wordDict){
+            words.insert(str);
+        }
+        return fn(s, words);
+    }
+};
