@@ -1,0 +1,34 @@
+class Solution{
+public:
+    vector<int> dp;
+    bool isPalindrome(string &str, int start, int end){
+        while(start<end){
+            if(str[start]!=str[end]){
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+    int fn(string &str, int start){
+        if(start==str.size()){
+            return 0;
+        }
+        if(dp[start] != -1){
+            return dp[start];
+        }
+        int ans = INT_MAX;
+        for(int end=start;end<str.size();end++){
+            if(isPalindrome(str, start, end)){
+                int temp = 1 + fn(str, end+1);
+                ans = min(temp, ans);
+            }
+        }
+        return dp[start] = ans;
+    }
+    int palindromicPartition(string str){
+        dp.resize(str.size(), -1);
+        return fn(str, 0)-1;
+    }
+};
