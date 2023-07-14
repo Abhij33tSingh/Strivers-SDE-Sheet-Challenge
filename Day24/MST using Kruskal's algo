@@ -1,0 +1,57 @@
+class Solution
+{
+	public:
+	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+	int findParent(int u, vector<int> &parent){
+	    if(parent[u] == u){
+	        return u;
+	    }
+	    return parent[u] = findParent(parent[u], parent);
+	}
+	void unionByRank(int &u, int &v, vector<int> &rank, vector<int> &parent){
+	    int uParent = findParent(u, parent);
+	    int vParent = findParent(v, parent);
+	    
+	    if(uParent == vParent){
+	        return;
+	    }
+	    if(rank[uParent] < rank[vParent]){
+	        parent[uParent] = vParent;
+	    }else if(rank[uParent] > rank[vParent]){
+	        parent[vParent] = uParent;
+	    }else{
+	        parent[vParent] = uParent;
+	        rank[uParent]++;
+	    }
+	}
+    int spanningTree(int V, vector<vector<int>> adj[])
+    {
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
+        for(int u=0;u<V;u++){
+            for(auto it:adj[u]){
+                int v = it[0];
+                int wt = it[1];
+                pq.push({wt, {u, v}});
+            }
+        }
+        int ans = 0;
+        vector<int> parent(V);
+        for(int i=0;i<V;i++){
+            parent[i] = i;
+        }
+        vector<int> rank(V, 0);
+        int count = 0;
+        while(count < V-1){
+            int wt = pq.top().first;
+            int u = pq.top().second.first;
+            int v = pq.top().second.second;
+            pq.pop();
+            if(findParent(u, parent) != findParent(v, parent)){
+                ans += wt;
+                unionByRank(u, v, rank, parent);
+                count++;
+            }
+        }
+        return ans;
+    }
+};
