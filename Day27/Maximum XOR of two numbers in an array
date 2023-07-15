@@ -1,0 +1,53 @@
+struct Node{
+    Node* arr[2];
+
+    bool containsKey(int bit){
+        return arr[bit] != NULL;
+    }
+
+    void insert(int bit){
+        arr[bit] = new Node();
+    }
+
+    Node* getNext(int bit){
+        return arr[bit];
+    }
+}*root;
+class Solution {
+public:
+    void addInTrie(int num){
+        Node *temp = root;
+        for(int i=31;i>=0;i--){
+            int bit = (num >> i) & 1;
+            if(!temp->containsKey(bit)){
+                temp->insert(bit);
+            }
+            temp = temp->getNext(bit);
+        }
+    }
+    int getMax(int num){
+        Node *temp = root;
+        int maxNum = 0;
+        for(int i=31;i>=0;i--){
+            int bit = (num >> i) & 1;
+            if(temp->containsKey(1-bit)){
+                maxNum = maxNum | (1 << i);
+                temp = temp->getNext(1-bit);
+            }else{
+                temp = temp->getNext(bit);
+            }
+        }
+        return maxNum;
+    }
+    int findMaximumXOR(vector<int>& nums) {
+        root = new Node();
+        for(int num:nums){
+            addInTrie(num);
+        }
+        int ans = 0;
+        for(int num:nums){
+            ans = max(ans, getMax(num));
+        }
+        return ans;
+    }
+};
