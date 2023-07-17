@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool ans = true;
+    void fn(TreeNode *p, TreeNode *q){
+        if(!ans){
+            return;
+        }
+        if(!p && !q){
+            return;
+        }
+        if(p && !q){
+            ans = false;
+            return;
+        }
+        if(!p && q){
+            ans = false;
+            return;
+        }
+        if(p->val != q->val){
+            ans = false;
+            return;
+        }
+        fn(p->left, q->left);
+        fn(p->right, q->right);
+    }
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        fn(p, q);
+        return ans;
+    }
+};
