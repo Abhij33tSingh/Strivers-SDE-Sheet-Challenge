@@ -1,0 +1,18 @@
+void fn(BinaryTreeNode<int> *root, string str, vector<string> &ans){
+    if(root==NULL){
+        return;
+    }
+    if(root->left==NULL && root->right==NULL){
+        str += to_string(root->data);
+        ans.push_back(str);
+        return;
+    }
+    fn(root->left, str+to_string(root->data)+" ", ans);
+    fn(root->right, str+to_string(root->data)+" ", ans);
+}
+
+vector < string > allRootToLeaf(BinaryTreeNode < int > * root) {
+    vector<string> ans;
+    fn(root, "", ans);
+    return ans;
+}
