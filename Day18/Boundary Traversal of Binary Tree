@@ -1,0 +1,52 @@
+bool isLeafNode(TreeNode<int>* &root){
+    return root->left==NULL && root->right==NULL;
+}
+void leftMost(TreeNode<int> *root, vector<int> &ans){
+    TreeNode<int> *ptr = root; 
+    while(ptr!=NULL && !isLeafNode(ptr)){
+        ans.push_back(ptr->data);
+        if(ptr->left){
+            ptr = ptr->left;
+        }else{
+            ptr = ptr->right;
+        }
+    }
+}
+void inOrder(TreeNode<int> *ptr, vector<int> &ans, TreeNode<int> *&root){
+    if(!ptr){
+        return;
+    }
+    inOrder(ptr->left, ans, root);
+    if(isLeafNode(ptr) && ptr!=root){
+        ans.push_back(ptr->data);
+    }
+    inOrder(ptr->right, ans, root);
+}
+void rightMost(TreeNode<int> *ptr, stack<int> &st){
+    while(ptr!=NULL && !isLeafNode(ptr)){
+        st.push(ptr->data);
+        if(ptr->right){
+            ptr = ptr->right;
+        }else{
+            ptr = ptr->left;
+        }
+    }
+}
+vector<int> traverseBoundary(TreeNode<int>* root){
+    // Write your code here.
+    if(!root){
+        return {};
+    }
+    vector<int> ans;
+    ans.push_back(root->data);
+    leftMost(root->left, ans);
+    inOrder(root, ans, root);
+    stack<int> st;
+    rightMost(root->right, st);
+    while(!st.empty()){
+        int x = st.top();
+        ans.push_back(x);
+        st.pop();
+    }
+    return ans;
+}
