@@ -1,0 +1,23 @@
+bool isParentSum(Node *root){
+    queue<Node*> q;
+    q.push(root);
+    while(!q.empty()){
+        Node *curr = q.front();
+        q.pop();
+        if(curr->left || curr->right){
+            int sum = 0;
+            if(curr->left){
+                sum += curr->left->data;
+                q.push(curr->left);
+            }
+            if(curr->right){
+                sum += curr->right->data;
+                q.push(curr->right);
+            }
+            if(sum != curr->data){
+                return false;
+            }
+        }
+    }
+    return true;
+}
