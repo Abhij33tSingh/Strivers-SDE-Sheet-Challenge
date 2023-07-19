@@ -1,0 +1,24 @@
+class Solution {
+public:
+    TreeNode* fn(vector<int> &inorder, int inStart, int inEnd, vector<int> &postorder, int postStart, int postEnd, map<int, int> &hash){
+        if(inStart > inEnd || postStart > postEnd){
+            return NULL;
+        }
+        TreeNode *head = new TreeNode(postorder[postEnd]);
+        int inOrderIndex = hash[postorder[postEnd]];
+        int nElements = inOrderIndex - inStart;
+
+        head->left = fn(inorder, inStart, inOrderIndex-1, postorder, postStart, postStart+nElements-1, hash);
+
+        head->right = fn(inorder,inOrderIndex+1, inEnd, postorder, postStart+nElements, postEnd-1, hash);
+
+        return head;
+    }
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        map<int, int> hash;
+        for(int i=0;i<inorder.size();i++){
+            hash[inorder[i]] = i;
+        }
+        return fn(inorder, 0, inorder.size()-1, postorder, 0, postorder.size()-1, hash);
+    }
+};
