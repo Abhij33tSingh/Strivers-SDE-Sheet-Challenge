@@ -1,0 +1,26 @@
+class Solution {
+public:
+    TreeNode* fn(vector<int> &preorder, vector<int> &inorder, map<int, int> &hash, 
+                int preStart, int preEnd, int inStart, int inEnd){
+            if(preStart > preEnd || inStart > inEnd){
+                return NULL;
+            }
+            // cout<<"hi";
+            TreeNode *head = new TreeNode(preorder[preStart]);
+            int inOrderIndex = hash[preorder[preStart]];
+            int nElements = inOrderIndex - inStart;
+
+            head->left = fn(preorder, inorder, hash, preStart+1, preStart+nElements, inStart, inOrderIndex-1);
+
+            head->right = fn(preorder, inorder, hash, preStart+nElements+1, preEnd, inOrderIndex+1, inEnd);
+
+            return head;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        map<int, int> hashInorder;
+        for(int i=0;i<inorder.size();i++){
+            hashInorder[inorder[i]] = i;
+        }
+        return fn(preorder, inorder, hashInorder, 0, preorder.size()-1, 0, inorder.size()-1);
+    }
+};
