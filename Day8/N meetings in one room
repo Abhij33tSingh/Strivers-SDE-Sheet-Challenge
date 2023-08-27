@@ -1,0 +1,30 @@
+class Solution
+{
+    public:
+    struct job{
+      int start, end;  
+    };
+    //Function to find the maximum number of meetings that can
+    //be performed in a meeting room.
+    bool static compare(job &a, job &b){
+        return a.end < b.end;
+    }
+    int maxMeetings(int start[], int end[], int n){
+        job jobs[n];
+        for(int i=0;i<n;i++){
+            jobs[i].start = start[i];
+            jobs[i].end = end[i];
+        }
+        sort(jobs, jobs + n, compare);
+        int currEnd = jobs[0].end;
+        int count = 1;
+        for(int i=1;i<n;i++){
+            if(jobs[i].start > currEnd){
+                currEnd = jobs[i].end;
+                count++;
+            }
+        }
+        return count;
+        // Your code here
+    }
+};
